@@ -175,7 +175,8 @@ landing_conditions = {
 
 def enqueue(queue, module):
     """Adiciona um módulo ao final da fila (operação FIFO)."""
-    queue.append(module)
+    # TODO: adicionar module ao final de queue
+    pass
 
 
 def dequeue(queue):
@@ -183,14 +184,15 @@ def dequeue(queue):
     Remove e retorna o primeiro módulo da fila (operação FIFO).
     Retorna None se a fila estiver vazia.
     """
-    if len(queue) == 0:
-        return None
-    return queue.pop(0)
+    # TODO: verificar se queue está vazia (retornar None)
+    # TODO: remover e retornar o primeiro elemento (índice 0)
+    pass
 
 
 def push(stack, item):
     """Adiciona um item ao topo da pilha (operação LIFO)."""
-    stack.append(item)
+    # TODO: adicionar item ao topo (final) de stack
+    pass
 
 
 def pop(stack):
@@ -198,9 +200,9 @@ def pop(stack):
     Remove e retorna o item do topo da pilha (operação LIFO).
     Retorna None se a pilha estiver vazia.
     """
-    if len(stack) == 0:
-        return None
-    return stack.pop()
+    # TODO: verificar se stack está vazia (retornar None)
+    # TODO: remover e retornar o último elemento (topo)
+    pass
 
 
 def peek(stack):
@@ -208,14 +210,15 @@ def peek(stack):
     Consulta o item do topo da pilha sem removê-lo.
     Retorna None se a pilha estiver vazia.
     """
-    if len(stack) == 0:
-        return None
-    return stack[-1]
+    # TODO: verificar se stack está vazia (retornar None)
+    # TODO: retornar o último elemento sem remover (dica: índice -1)
+    pass
 
 
 def is_empty(structure):
     """Verifica se uma estrutura (fila, pilha ou lista) está vazia."""
-    return len(structure) == 0
+    # TODO: retornar True se len() for 0
+    pass
 
 
 # =============================================================================
@@ -241,39 +244,22 @@ def check_landing_authorization(module, conditions):
 
     Retorna: True se autorizado, False caso contrário.
     """
-    # Avaliação das variáveis booleanas
-    fuel_ok = module["fuel_level"] >= 20.0                  # F
-    atmosphere_ok = conditions["atmosphere_ok"]              # A
-    zone_free = conditions["landing_zone_free"]              # L
-    sensors_ok = conditions["sensors_ok"]                    # S
-    emergency = module["cargo_criticality"] == 5             # E (NOT normal)
+    # TODO: extrair as variáveis booleanas do module e conditions
+    # fuel_ok = ...                   # F: module["fuel_level"] >= 20.0
+    # atmosphere_ok = ...             # A: conditions["atmosphere_ok"]
+    # zone_free = ...                 # L: conditions["landing_zone_free"]
+    # sensors_ok = ...                # S: conditions["sensors_ok"]
+    # emergency = ...                 # E: module["cargo_criticality"] == 5
 
-    # Expressão booleana composta: F AND A AND (L OR E) AND S
-    authorized = fuel_ok and atmosphere_ok and (zone_free or emergency) and sensors_ok
+    # TODO: montar a expressão booleana composta
+    # authorized = fuel_ok and atmosphere_ok and (zone_free or emergency) and sensors_ok
 
-    # Se não autorizado, registrar alerta com motivo específico
-    if not authorized:
-        reasons = []
-        if not fuel_ok:
-            reasons.append(
-                f"Combustível insuficiente ({module['fuel_level']:.1f}%)"
-            )
-        if not atmosphere_ok:
-            reasons.append("Condições atmosféricas desfavoráveis")
-        if not zone_free and not emergency:
-            reasons.append("Zona de pouso ocupada (módulo não emergencial)")
-        if not sensors_ok:
-            reasons.append("Sensores com falha")
+    # TODO: se NÃO autorizado, montar lista de motivos (reasons) e criar
+    #   um dict de alerta com chaves: module_id, module_name, reason, timestamp
+    #   Empilhar o alerta na alert_stack usando push()
 
-        alert = {
-            "module_id": module["id"],
-            "module_name": module["name"],
-            "reason": "; ".join(reasons),
-            "timestamp": module["estimated_arrival"],
-        }
-        push(alert_stack, alert)
-
-    return authorized
+    # TODO: retornar authorized (True ou False)
+    pass
 
 
 # =============================================================================
@@ -287,11 +273,10 @@ def search_by_type(modules, module_type):
 
     Complexidade: O(n) — percorre todos os elementos uma vez.
     """
-    results = []
-    for module in modules:
-        if module["type"] == module_type:
-            results.append(module)
-    return results
+    # TODO: criar lista vazia results
+    # TODO: percorrer modules, adicionando a results os que têm type == module_type
+    # TODO: retornar results
+    pass
 
 
 def search_min_fuel(modules):
@@ -302,13 +287,11 @@ def search_min_fuel(modules):
     Inicializa com o primeiro elemento e compara com cada subsequente.
     Complexidade: O(n).
     """
-    if is_empty(modules):
-        return None
-    min_module = modules[0]
-    for i in range(1, len(modules)):
-        if modules[i]["fuel_level"] < min_module["fuel_level"]:
-            min_module = modules[i]
-    return min_module
+    # TODO: verificar se modules está vazia (retornar None)
+    # TODO: inicializar min_module com modules[0]
+    # TODO: percorrer de 1 a len(modules), comparando fuel_level
+    # TODO: retornar min_module
+    pass
 
 
 def search_highest_priority(modules):
@@ -318,13 +301,11 @@ def search_highest_priority(modules):
 
     Complexidade: O(n).
     """
-    if is_empty(modules):
-        return None
-    best = modules[0]
-    for i in range(1, len(modules)):
-        if modules[i]["priority"] < best["priority"]:
-            best = modules[i]
-    return best
+    # TODO: verificar se modules está vazia (retornar None)
+    # TODO: inicializar best com modules[0]
+    # TODO: percorrer de 1 a len(modules), comparando priority (menor = melhor)
+    # TODO: retornar best
+    pass
 
 
 # =============================================================================
@@ -342,15 +323,13 @@ def sort_by_priority(modules):
     Complexidade: O(n²) no pior caso, O(n) no melhor caso (já ordenada).
     """
     n = len(modules)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n - i - 1):
-            if modules[j]["priority"] > modules[j + 1]["priority"]:
-                # Troca (swap) dos elementos adjacentes
-                modules[j], modules[j + 1] = modules[j + 1], modules[j]
-                swapped = True
-        if not swapped:
-            break  # Nenhuma troca — lista já está ordenada
+    # TODO: loop externo i de 0 a n
+    #   TODO: inicializar swapped = False
+    #   TODO: loop interno j de 0 a n - i - 1
+    #     TODO: se modules[j]["priority"] > modules[j+1]["priority"], trocar
+    #       Swap: modules[j], modules[j+1] = modules[j+1], modules[j]
+    #       swapped = True
+    #   TODO: se not swapped, break (lista já está ordenada)
     return modules
 
 
@@ -364,13 +343,12 @@ def sort_by_fuel(modules):
     Complexidade: O(n²) em todos os casos, mas eficiente em trocas.
     """
     n = len(modules)
-    for i in range(n):
-        min_idx = i
-        for j in range(i + 1, n):
-            if modules[j]["fuel_level"] < modules[min_idx]["fuel_level"]:
-                min_idx = j
-        if min_idx != i:
-            modules[i], modules[min_idx] = modules[min_idx], modules[i]
+    # TODO: loop externo i de 0 a n
+    #   TODO: inicializar min_idx = i
+    #   TODO: loop interno j de i+1 a n
+    #     TODO: se modules[j]["fuel_level"] < modules[min_idx]["fuel_level"]
+    #       min_idx = j
+    #   TODO: se min_idx != i, trocar modules[i] com modules[min_idx]
     return modules
 
 
@@ -393,7 +371,8 @@ def descent_altitude(t, h0=2000.0, v0=80.0, a=3.7):
 
     Retorna: altitude em metros
     """
-    return h0 - v0 * t - 0.5 * a * t ** 2
+    # TODO: retornar h0 - v0 * t - 0.5 * a * t ** 2
+    pass
 
 
 def fuel_consumption(v, c0=10.0, k=0.02):
@@ -411,7 +390,8 @@ def fuel_consumption(v, c0=10.0, k=0.02):
 
     Retorna: consumo de combustível em kg/s
     """
-    return c0 * math.exp(k * v)
+    # TODO: retornar c0 * math.exp(k * v)
+    pass
 
 
 def solar_energy(t, a_coeff=15.0, t_mid=12.3, e_max=2200.0):
@@ -430,10 +410,10 @@ def solar_energy(t, a_coeff=15.0, t_mid=12.3, e_max=2200.0):
 
     Retorna: energia gerada em watts (mínimo 0)
     """
-    energy = -a_coeff * (t - t_mid) ** 2 + e_max
-    if energy < 0:
-        return 0.0
-    return energy
+    # TODO: calcular energy = -a_coeff * (t - t_mid) ** 2 + e_max
+    # TODO: se energy < 0, retornar 0.0
+    # TODO: retornar energy
+    pass
 
 
 def surface_temperature(t, t_avg=-60.0, amplitude=40.0, period=24.62, phase=0.0):
@@ -453,7 +433,8 @@ def surface_temperature(t, t_avg=-60.0, amplitude=40.0, period=24.62, phase=0.0)
 
     Retorna: temperatura em °C
     """
-    return t_avg + amplitude * math.sin(2 * math.pi * t / period - phase)
+    # TODO: retornar t_avg + amplitude * math.sin(2 * math.pi * t / period - phase)
+    pass
 
 
 # =============================================================================
@@ -467,12 +448,10 @@ def load_modules():
     Cria cópias independentes (dict()) para preservar MODULES_DATA.
     """
     global landing_queue, landed_modules, waiting_modules, alert_stack
-    landing_queue = []
-    landed_modules = []
-    waiting_modules = []
-    alert_stack = []
-    for module in MODULES_DATA:
-        enqueue(landing_queue, dict(module))
+    # TODO: reiniciar as 4 estruturas como listas vazias
+    # TODO: percorrer MODULES_DATA e enqueue(landing_queue, dict(module))
+    #   Nota: dict(module) cria uma cópia para não alterar os dados originais
+    pass
 
 
 def run_landing_simulation():
@@ -487,49 +466,25 @@ def run_landing_simulation():
         5. Módulos bloqueados vão para waiting_modules + alerta na pilha
         6. Exibe resumo completo da operação
     """
-    # Preparação: recarregar módulos e ordenar por prioridade
-    load_modules()
-    sort_by_priority(landing_queue)
+    # TODO: chamar load_modules() e sort_by_priority(landing_queue)
 
-    print()
-    print("=" * 60)
-    print("     SIMULAÇÃO DE POUSO — Colônia Aurora Siger")
-    print("=" * 60)
-    print()
-    atm = "OK" if landing_conditions["atmosphere_ok"] else "DESFAVORÁVEL"
-    zone = "LIVRE" if landing_conditions["landing_zone_free"] else "OCUPADA"
-    sens = "OK" if landing_conditions["sensors_ok"] else "FALHA"
-    print(f"  Condições: Atmosfera={atm} | Zona={zone} | Sensores={sens}")
-    print()
-    print(f"  Processando fila de pouso ({len(landing_queue)} módulos)...")
-    print("-" * 60)
+    # TODO: imprimir cabeçalho da simulação com condições atuais
+    #   Dica: landing_conditions["atmosphere_ok"] → "OK" ou "DESFAVORÁVEL"
 
-    # Processar cada módulo sequencialmente
-    while not is_empty(landing_queue):
-        module = dequeue(landing_queue)
-        authorized = check_landing_authorization(module, landing_conditions)
+    # TODO: loop while not is_empty(landing_queue):
+    #   module = dequeue(landing_queue)
+    #   authorized = check_landing_authorization(module, landing_conditions)
+    #   Se autorizado:
+    #     module["status"] = "landed"
+    #     adicionar a landed_modules
+    #     imprimir "[AUTORIZADO] nome"
+    #   Se bloqueado:
+    #     module["status"] = "waiting"
+    #     adicionar a waiting_modules
+    #     imprimir "[BLOQUEADO] nome" + motivo (peek na alert_stack)
 
-        if authorized:
-            module["status"] = "landed"
-            landed_modules.append(module)
-            print(f"  [AUTORIZADO] {module['name']}")
-        else:
-            module["status"] = "waiting"
-            waiting_modules.append(module)
-            last_alert = peek(alert_stack)
-            reason = last_alert["reason"] if last_alert else "Desconhecido"
-            print(f"  [BLOQUEADO]  {module['name']}")
-            print(f"               Motivo: {reason}")
-
-    # Resumo da simulação
-    print()
-    print("-" * 60)
-    print("     RESUMO DA SIMULAÇÃO")
-    print("-" * 60)
-    print(f"  Módulos pousados com sucesso:  {len(landed_modules)}")
-    print(f"  Módulos em espera (bloqueados): {len(waiting_modules)}")
-    print(f"  Alertas gerados:               {len(alert_stack)}")
-    print()
+    # TODO: imprimir resumo — total pousados, em espera, alertas
+    pass
 
 
 # =============================================================================
@@ -538,42 +493,27 @@ def run_landing_simulation():
 
 def display_module(module):
     """Exibe os dados de um módulo em formato de linha única formatada."""
-    print(
-        f"  [ID:{module['id']:02d}] {module['name']:<28s} | "
-        f"Prior: {module['priority']:>2d} | "
-        f"Comb: {module['fuel_level']:>5.1f}% | "
-        f"Massa: {module['mass']:>7.0f}kg | "
-        f"Crit: {module['cargo_criticality']} | "
-        f"{module['status']}"
-    )
+    # TODO: imprimir linha formatada com id, name, priority, fuel_level, mass,
+    #   cargo_criticality e status
+    #   Dica: f"  [ID:{module['id']:02d}] {module['name']:<28s} | ..."
+    pass
 
 
 def display_modules(modules, title):
     """Exibe uma lista de módulos com título e contagem."""
-    print()
-    print(f"--- {title} ({len(modules)} módulos) ---")
-    if is_empty(modules):
-        print("  (vazia)")
-    else:
-        for module in modules:
-            display_module(module)
-    print()
+    # TODO: imprimir título com contagem
+    # TODO: se vazia, imprimir "(vazia)"
+    # TODO: senão, percorrer e chamar display_module() para cada um
+    pass
 
 
 def display_alerts():
     """Exibe a pilha de alertas do topo para a base (sem remover)."""
-    print()
-    print(f"--- Pilha de Alertas ({len(alert_stack)} alertas) ---")
-    if is_empty(alert_stack):
-        print("  (nenhum alerta registrado)")
-    else:
-        for i in range(len(alert_stack) - 1, -1, -1):
-            alert = alert_stack[i]
-            position = len(alert_stack) - i
-            print(f"  [{position}] Módulo: {alert['module_name']} (ID:{alert['module_id']:02d})")
-            print(f"      Motivo: {alert['reason']}")
-            print(f"      Horário: {alert['timestamp']}")
-    print()
+    # TODO: imprimir título com contagem de alertas
+    # TODO: se vazia, imprimir "(nenhum alerta registrado)"
+    # TODO: senão, percorrer de trás para frente (topo → base)
+    #   e imprimir module_name, reason, timestamp de cada alerta
+    pass
 
 
 def menu_sort():
@@ -585,55 +525,31 @@ def menu_sort():
     print("  0. Voltar")
     choice = input("Opção: ").strip()
 
-    if choice == "1":
-        sort_by_priority(landing_queue)
-        print("\n  Fila ordenada por prioridade.")
-        display_modules(landing_queue, "Fila de Pouso")
-    elif choice == "2":
-        sort_by_fuel(landing_queue)
-        print("\n  Fila ordenada por nível de combustível.")
-        display_modules(landing_queue, "Fila de Pouso")
+    # TODO: se choice == "1", chamar sort_by_priority e exibir fila
+    # TODO: se choice == "2", chamar sort_by_fuel e exibir fila
+    pass
 
 
 def menu_search():
     """Submenu de busca de módulos na fila ou nos dados originais."""
     # Se a fila estiver vazia (pós-simulação), buscar nos dados originais
     source = landing_queue if not is_empty(landing_queue) else MODULES_DATA
-    source_name = "fila de pouso" if not is_empty(landing_queue) else "dados originais"
 
     print()
-    print(f"--- Buscar Módulo (buscando em: {source_name}) ---")
+    print("--- Buscar Módulo ---")
     print("  1. Por tipo")
     print("  2. Menor combustível")
     print("  3. Maior prioridade")
     print("  0. Voltar")
     choice = input("Opção: ").strip()
 
-    if choice == "1":
-        print()
-        print("  Tipos disponíveis:")
-        print("    command, life_support, habitat, solar, nuclear, comms,")
-        print("    medical, food, logistics, isru, workshop, lab")
-        module_type = input("  Digite o tipo: ").strip().lower()
-        results = search_by_type(source, module_type)
-        if is_empty(results):
-            print(f"\n  Nenhum módulo do tipo '{module_type}' encontrado.")
-        else:
-            display_modules(results, f"Módulos do tipo '{module_type}'")
-
-    elif choice == "2":
-        result = search_min_fuel(source)
-        if result:
-            print("\n  Módulo com menor combustível:")
-            display_module(result)
-            print()
-
-    elif choice == "3":
-        result = search_highest_priority(source)
-        if result:
-            print("\n  Módulo com maior prioridade:")
-            display_module(result)
-            print()
+    # TODO: se choice == "1":
+    #   pedir tipo via input(), chamar search_by_type(), exibir resultados
+    # TODO: se choice == "2":
+    #   chamar search_min_fuel(), exibir resultado
+    # TODO: se choice == "3":
+    #   chamar search_highest_priority(), exibir resultado
+    pass
 
 
 def menu_math():
@@ -647,54 +563,15 @@ def menu_math():
     print("  0. Voltar")
     choice = input("Opção: ").strip()
 
-    if choice == "1":
-        print()
-        print("  Altitude de descida: h(t) = h0 - v0*t - 0.5*a*t^2")
-        print("  Parâmetros: h0=2000m, v0=80m/s, a=3.7m/s^2")
-        print()
-        for t in range(0, 20):
-            h = descent_altitude(t)
-            if h < 0:
-                print(f"    t={t:>2d}s  |  IMPACTO (h < 0)")
-                break
-            bar = "#" * max(0, int(h / 50))
-            print(f"    t={t:>2d}s  |  h={h:>7.1f}m  | {bar}")
-        print()
-
-    elif choice == "2":
-        print()
-        print("  Consumo de combustível: C(v) = C0 * e^(k*v)")
-        print("  Parâmetros: C0=10.0 kg/s, k=0.02")
-        print()
-        for v in range(0, 201, 20):
-            c = fuel_consumption(v)
-            bar = "#" * min(50, int(c / 5))
-            print(f"    v={v:>3d} m/s  |  C={c:>8.2f} kg/s  | {bar}")
-        print()
-
-    elif choice == "3":
-        print()
-        print("  Energia solar: E(t) = -a*(t - t_mid)^2 + E_max")
-        print("  Parâmetros: a=15.0, t_mid=12.3h, E_max=2200W")
-        print()
-        for t in range(0, 25):
-            e = solar_energy(t)
-            bar = "#" * int(e / 100)
-            print(f"    t={t:>2d}h  |  E={e:>7.1f}W  | {bar}")
-        print()
-
-    elif choice == "4":
-        print()
-        print("  Temperatura superficial: T(t) = T_avg + A*sin(2*pi*t/P - phi)")
-        print("  Parâmetros: T_avg=-60°C, A=40°C, P=24.62h")
-        print()
-        for t in range(0, 25):
-            temp = surface_temperature(t)
-            # Escala visual: mapear -100°C...-20°C para 0...20 caracteres
-            bar_len = max(0, int((temp + 100) / 4))
-            bar = " " * bar_len + "#"
-            print(f"    t={t:>2d}h  |  T={temp:>6.1f}°C  | {bar}")
-        print()
+    # TODO: para cada opção, imprimir a fórmula e parâmetros, depois
+    #   usar um loop for/range para calcular e imprimir valores tabelados.
+    #   Exemplo para altitude:
+    #     for t in range(0, 20):
+    #         h = descent_altitude(t)
+    #         if h < 0:
+    #             print("IMPACTO"); break
+    #         print(f"  t={t}s | h={h:.1f}m")
+    pass
 
 
 def menu_conditions():
@@ -713,13 +590,11 @@ def menu_conditions():
         print("  0. Voltar")
         choice = input("Alternar condição (0 para voltar): ").strip()
 
-        if choice == "1":
-            landing_conditions["atmosphere_ok"] = not landing_conditions["atmosphere_ok"]
-        elif choice == "2":
-            landing_conditions["landing_zone_free"] = not landing_conditions["landing_zone_free"]
-        elif choice == "3":
-            landing_conditions["sensors_ok"] = not landing_conditions["sensors_ok"]
-        elif choice == "0":
+        # TODO: se choice == "1", inverter landing_conditions["atmosphere_ok"]
+        # TODO: se choice == "2", inverter landing_conditions["landing_zone_free"]
+        # TODO: se choice == "3", inverter landing_conditions["sensors_ok"]
+        # TODO: se choice == "0", break
+        if choice == "0":
             break
 
 
@@ -751,42 +626,24 @@ def main():
         print("-" * 45)
         choice = input("Opção: ").strip()
 
-        if choice == "1":
-            display_modules(landing_queue, "Fila de Pouso")
-            if not is_empty(landed_modules):
-                display_modules(landed_modules, "Módulos Pousados")
-            if not is_empty(waiting_modules):
-                display_modules(waiting_modules, "Módulos em Espera")
+        # TODO: conectar cada opção à função correspondente
+        #   "1" → display_modules(landing_queue, "Fila de Pouso")
+        #          + exibir landed_modules e waiting_modules se não vazias
+        #   "2" → menu_sort() (verificar se fila não está vazia antes)
+        #   "3" → menu_search()
+        #   "4" → run_landing_simulation()
+        #   "5" → display_alerts()
+        #   "6" → menu_math()
+        #   "7" → menu_conditions()
+        #   "0" → imprimir despedida e break
 
-        elif choice == "2":
-            if is_empty(landing_queue):
-                print("\n  Fila vazia. Execute a simulação (opção 4) para recarregar.")
-            else:
-                menu_sort()
-
-        elif choice == "3":
-            menu_search()
-
-        elif choice == "4":
-            run_landing_simulation()
-
-        elif choice == "5":
-            display_alerts()
-
-        elif choice == "6":
-            menu_math()
-
-        elif choice == "7":
-            menu_conditions()
-
-        elif choice == "0":
+        if choice == "0":
             print()
             print("  Encerrando MGPEB. Missão Aurora Siger — fim da sessão.")
             print()
             break
-
         else:
-            print("  Opção inválida. Tente novamente.")
+            print("  Opção ainda não implementada.")
 
 
 # =============================================================================
