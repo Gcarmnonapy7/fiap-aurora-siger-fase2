@@ -122,7 +122,7 @@ MODULES_DATA = [
     },
     {
         "id": 10,
-        "name": "ISRU",
+        "name": "ISRU (Recursos Locais)",
         "type": "isru",
         "priority": 10,
         "fuel_level": 42.0,
@@ -175,8 +175,7 @@ landing_conditions = {
 
 def enqueue(queue, module):
     """Adiciona um módulo ao final da fila (operação FIFO)."""
-    # TODO: adicionar module ao final de queue
-    pass
+    queue.append(module)
 
 
 def dequeue(queue):
@@ -184,9 +183,9 @@ def dequeue(queue):
     Remove e retorna o primeiro módulo da fila (operação FIFO).
     Retorna None se a fila estiver vazia.
     """
-    # TODO: verificar se queue está vazia (retornar None)
-    # TODO: remover e retornar o primeiro elemento (índice 0)
-    pass
+    if len(queue) == 0:
+        return None
+    return queue.pop(0)
 
 
 def push(stack, item):
