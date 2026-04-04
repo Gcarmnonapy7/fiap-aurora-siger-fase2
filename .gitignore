@@ -1,0 +1,14 @@
+# Documentação de trabalho (não faz parte da entrega)
+docs/
+CLAUDE.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
