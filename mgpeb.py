@@ -40,13 +40,14 @@ class Module:
     weight: float
     arrival_time: float
     stop_condition: StopCondition = StopCondition.WAITING
+    priority: int = 0
     
     def __str__(self):
         return f"Module {self.id} - Type: {self.type.value}, Weight: {self.weight}kg, Arrival: {time.ctime(self.arrival_time)}, Condition: {self.stop_condition.value}"
     
     def __lt__(self, other):
-        """Defines the less-than operator for sorting modules by arrival time."""
-        return self.arrival_time < other.arrival_time
+        """Defines the less-than operator for sorting modules by priority."""
+        return self.priority < other.priority
     
 # === Algorithms for searching and sorting === 
 
@@ -139,16 +140,63 @@ class SearchAlgorithms:
         return None # Return None if target is not found
     
     @staticmethod
-    def priority_linear(list_to_modules: List[Module], priority : int) -> List[Module]:
+    def priority_module(list_to_modules: List[Module], priority : int) -> List[Module]:
         """
         Searches all modules in the list with priority for the target type.
         """
                 
         return [module for module in list_to_modules if module.type.value == priority]
-          
-# =============================================================================
-# [2] ESTRUTURAS LINEARES — Operações de fila, pilha e verificação
-# =============================================================================
+
+# Implementing sorting algorithms for the modules based on their priority and arrival time
+
+class SortAlgorithms: 
+    
+    @staticmethod
+    def bubble_sort(modules: List[Module], camp: str=  "priority") -> List[Module]:
+        """
+        Sorts a list of modules using the Bubble Sort algorithm.
+        
+        Args:
+                modules: A list of Module objects to be sorted.
+        Returns:
+                A new list of Module objects sorted by priority or arrival time.
+        """
+        
+        if modules is None:
+            raise ValueError("The list of modules cannot be None.")
+        elif camp not in ["priority", "arrival_time"]:
+            raise ValueError("The sorting camp must be either 'priority' or 'arrival_time'.")
+        
+        begin = time.perf_counter()
+        comparation = 0
+
+        len_modules = len(modules)
+        
+        modules_copy = modules.copy()  # Create a copy of the list to avoid modifying the original
+        
+        for first in range(len_modules - 1):
+            for second in range(0, len_modules - first - 1):
+                comparation += 1
+    
+                if camp == "priority":
+                    if modules_copy[second].priority > modules_copy[second + 1].priority:
+                        modules_copy[second], modules_copy[second + 1] = modules_copy[second + 1], modules_copy[second]
+                elif camp == "arrival_time":
+                    if modules_copy[second].arrival_time > modules_copy[second + 1].arrival_time:
+                        modules_copy[second], modules_copy[second + 1] = modules_copy[second + 1], modules_copy[second]
+        
+        end = time.perf_counter()
+        print(f"Bubble sort completed in {end - begin:.6f} seconds.")
+        print(f"Total comparisons made: {comparation}.")
+        
+        return modules_copy , (end - begin) * 1000, comparation
+    
+    @staticmethod
+    def quick_sort(modules: List[Module], camp: str=  "priority") -> List[Module]:
+        pass
+    
+        
+        
 
 
 # =============================================================================
@@ -158,13 +206,7 @@ class SearchAlgorithms:
 
 # =============================================================================
 # [4] BUSCA — Algoritmos de busca linear
-# =============================================================================
-
-
-# =============================================================================
-# [5] ORDENAÇÃO — Bubble Sort e Selection Sort
-# =============================================================================
-
+#
 
 # =============================================================================
 # [6] FUNÇÕES MATEMÁTICAS — Modelagem de fenômenos do pouso
@@ -181,6 +223,4 @@ class SearchAlgorithms:
 # =============================================================================
 
 
-# =============================================================================
-# Ponto de entrada
-# =============================================================================
+# Execute the main program
