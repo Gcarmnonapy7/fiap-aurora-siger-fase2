@@ -137,6 +137,14 @@ class SearchAlgorithms:
         )
         
         return None # Return None if target is not found
+    
+    @staticmethod
+    def priority_linear(list_to_modules: List[Module], priority : int) -> List[Module]:
+        """
+        Searches all modules in the list with priority for the target type.
+        """
+                
+        return [module for module in list_to_modules if module.type.value == priority]
           
 # =============================================================================
 # [2] ESTRUTURAS LINEARES — Operações de fila, pilha e verificação
