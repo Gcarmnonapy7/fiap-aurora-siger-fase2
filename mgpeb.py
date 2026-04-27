@@ -40,6 +40,7 @@ class Module:
     weight: float
     arrival_time: float
     stop_condition: StopCondition = StopCondition.WAITING
+    fuel_level: float = 100.0
     priority: int = 0
     
     def __str__(self):
@@ -54,18 +55,18 @@ class Module:
 class SearchAlgorithms:
     
     @staticmethod
-    def linear_search(list_to_search: List[Any], target: Any) -> Optional[int]:
+    def linear_search(modules_list: List[Any], target: Any) -> Optional[int]:
         """
         Performs a linear search for the target item in the list.
         
         Args:
-                list: A list of items to search through.
+                modules_list: A list of Module objects to search through.
                 target: The item to search for in the list.
         Returns:
                 The index of the target item if found, otherwise None.
         """
         
-        if list_to_search is None:
+        if modules_list is None:
             raise ValueError("The list to search cannot be None.")
         elif target is None:
             raise ValueError("The target to search cannot be None.")
@@ -73,7 +74,7 @@ class SearchAlgorithms:
         begin_time = time.perf_counter()
         comparation = 0
         
-        for index, module in enumerate(list_to_search):
+        for index, module in enumerate(modules_list):
             comparation += 1 
             
             if hasattr(module, 'id') and module.id == target:
@@ -88,34 +89,38 @@ class SearchAlgorithms:
                 
                 return index
         
+        print(
+            f"Linear search did not find target {target} after " 
+            f"{time.perf_counter() - begin_time:.6f} seconds with {comparation} comparisons."
+        )
         return None # Return None if target is not found
     
     @staticmethod
-    def binary_search(sorted_list: List[Any], target: Any) -> Optional[int]:
+    def binary_search(sorted_modules: List[Any], target: Any) -> Optional[int]:
         """
         Performs a binary search for the target item in a sorted list.
         
         Args:
-                sorted_list: A list of items that is already sorted.
+                sorted_modules: A list of items that is already sorted.
                 target: The item to search for in the list.
         Returns:
                 The index of the target item if found, otherwise None.
         """
         
-        if sorted_list is None:
+        if sorted_modules is None:
             raise ValueError("The list to search cannot be None.")
         elif target is None:
             raise ValueError("The target to search cannot be None.")
             
         begin_time = time.perf_counter()
         comparation = 0
-        left, right = 0, len(sorted_list) - 1
+        left, right = 0, len(sorted_modules) - 1
         
         while left <= right:
             mid = (left + right) // 2
             comparation += 1
             
-            if hasattr(sorted_list[mid], 'id') and sorted_list[mid].id == target:
+            if hasattr(sorted_modules[mid], 'id') and sorted_modules[mid].id == target:
                 end_time = time.perf_counter()
                 
                 print(
@@ -125,7 +130,7 @@ class SearchAlgorithms:
                 )
                 
                 return mid
-            elif hasattr(sorted_list[mid], 'id') and sorted_list[mid].id < target:
+            elif hasattr(sorted_modules[mid], 'id') and sorted_modules[mid].id < target:
                 left = mid + 1
             else:
                 right = mid - 1
@@ -179,6 +184,7 @@ class SortAlgorithms:
                 if camp == "priority":
                     if modules_copy[second].priority > modules_copy[second + 1].priority:
                         modules_copy[second], modules_copy[second + 1] = modules_copy[second + 1], modules_copy[second]
+                        
                 elif camp == "arrival_time":
                     if modules_copy[second].arrival_time > modules_copy[second + 1].arrival_time:
                         modules_copy[second], modules_copy[second + 1] = modules_copy[second + 1], modules_copy[second]
@@ -191,8 +197,78 @@ class SortAlgorithms:
     
     @staticmethod
     def quick_sort(modules: List[Module], camp: str=  "priority") -> List[Module]:
-        pass
+        """
+        Sorts a list of modules using the Quick Sort algorithm.
+        Args:
+                modules: A list of Module objects to be sorted.
+        Returns: 
+                A new list of Module objects sorted by priority or arrival time.
+        """
+        
+        if modules is None: 
+            raise ValueError("The list of modules cannot be None.")
+        elif camp not in ["priority", "arrival_time"]:
+            raise ValueError("The sorting camp must be either 'priority' or 'arrival_time'.")
+        
+        begin = time.perf_counter()
+        comparation = 0
+        
+        def _quick_sort(arr):
+            """_summary_
+            quick sort implementation for sorting modules by priority or arrival time.
+            
+            Args:
+                    arr: A list of Module objects to be sorted.
+            Returns:
+                    A new list of Module objects sorted by priority or arrival time.
+            """
+            if len(arr) <= 1:
+                return arr
+            
+            pivot = arr[len(arr) // 2] 
+            
+            less = []
+            equal = []
+            greater = []
+            
+            for modules in arr:
+                
+                comparation += 1 
+                
+                if camp == "priority": 
+                    if modules.priority < pivot.priority:
+                        less.append(modules)
+                    elif modules.priority == pivot.priority:
+                        equal.append(modules)
+                    else:
+                        greater.append(modules)
+                        
+                elif camp == "arrival_time":
+                    if modules.arrival_time < pivot.arrival_time:
+                        less.append(modules)
+                    elif modules.arrival_time == pivot.arrival_time:
+                        equal.append(modules)
+                    else:
+                        greater.append(modules)
+            
+            return _quick_sort(less) + equal + _quick_sort(greater) # Recursively sort the less and greater partitions and concatenate the results
+        
+        sorted_modules = _quick_sort(modules)
+        end = time.perf_counter()
+        
+        return sorted_modules, (end - begin) * 1000, comparation
     
+    @staticmethod
+    def merge_sort(modules: List[Module], camp: str=  "priority"):
+        """_summary_
+
+        Args:
+            modules (List[Module]): _description_
+            camp (str, optional): _description_. Defaults to "priority".
+        """
+        pass
+            
+            
         
         
 
