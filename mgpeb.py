@@ -633,7 +633,6 @@ class MGPEBSystem:
             for module in self.alert_list[-5:]:
                 report.append(f"   Module ID: {module.id} - Priority: {module.priority}")
     
-    
 # Comparing searches // sorting
 
 def comparing_searches_algorithms():
@@ -772,6 +771,7 @@ def list_modules(system:MGPEBSystem):
             print(f"   • ID: {module.id} | Name: {module.name} | Priority: {module.priority}")
     
     print("\n" + "=" * 60)
+    
 def menu():
     """Main interactive menu"""
     system = MGPEBSystem()
@@ -804,8 +804,7 @@ def menu():
         print("6. Compare search algorithms")
         print("7. Compare sorting algorithms")
         print("8. Show performance analysis")
-        print("9 Generate reports")
-        print("10 List Modules ")
+        print("9 List Modules ")
         print("0. Exit")
         print("-" * 50)
         
@@ -840,11 +839,8 @@ def menu():
         
         elif choice == "8":
             analyze_performance()
-        
-        elif choice == "9":
-            system.generate_report()
             
-        elif choice == "10":
+        elif choice == "9":
             list_modules(system)
                         
         elif choice == "0":
@@ -852,7 +848,6 @@ def menu():
             running = False
         else:
             print("Invalid option!")
-
 
 if __name__ == "__main__" :
     menu()
